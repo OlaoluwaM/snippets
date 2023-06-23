@@ -1,6 +1,7 @@
 module Writer where
 
 -- The Writer monad represents a computation that produces a value and accumulates a monoidic secondary output. Monoidic because the outputs must be concatenated through each computation
+-- The Writer monad represents computations with “extra output”: produced data, logging messages, and so forth: https://journal.infinitenegativeutility.com/writer-monads-and-space-leaks
 -- Useful for simulating conventional "mutable" state in a pure manner: https://williamyaoh.com/posts/2020-07-26-deriving-writer-monad.html
 
 newtype Writer log a = Writer {runWriter :: (log, a)}
