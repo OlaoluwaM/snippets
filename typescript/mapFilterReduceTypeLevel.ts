@@ -10,14 +10,13 @@ type Grr = MapLoop<["fr", "erf", "wefw"]>;
 // Filter
 type FilterLoop<
   List extends unknown[],
-  Results extends unknown[] = []
 > = List extends [infer First, ...infer Rest]
   ? Condition<First> extends true // Condition should be a constructor that returns either the true singleton or the false singleton type
-    ? FilterLoop<Rest, [...Results, First]>
-    : FilterLoop<Rest, Results>
-  : Results;
+    ? [First, ...FilterLoop<Rest>]
+    : FilterLoop<Rest>
+  : [];
 
-type Condition<T> = T extends 1 | 4 ? true : false;
+type Condition<T> = T extends 3 ? true : false;
 
 type FooPrime = FilterLoop<[1, 2, 3, 4]>;
 
@@ -41,3 +40,26 @@ type SomeCombineOp<T, U> = T extends string
   : never;
 
 type Hh = ReduceLoop<["fd", "fdfd", "fdfe"], "">;
+
+
+// Boilerplate
+
+// Map
+type SomeMapLoop<List> =
+  List extends [infer First, ...infer Rest]
+    ? [ /* ... 🤖 your logic */ , ...SomeMapLoop<Rest>]
+    : [];
+
+// Filter
+type SomeFilter<List> =
+  List extends [infer First, ...infer Rest]
+    ? First extends  /* ... ❓ your condition */
+      ? [First, ...SomeFilter<Rest>]
+      : SomeFilter<Rest>
+    : [];
+
+// Reduce
+type SomeReduce<Tuple, Acc = /* ... 📦 initial value */> =
+  Tuple extends [infer First, ...infer Rest]
+  ? SomeReduce<Rest, /* ... 🤖 logic */> // Tail recursive because the rcursive result is returned without modification
+  : Acc;
