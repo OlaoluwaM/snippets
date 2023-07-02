@@ -1,3 +1,4 @@
+{-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 module Reader where
@@ -11,13 +12,13 @@ data ABConfig = ABConfig {noUseLetterE :: Bool, noUseLetterL :: Bool}
 toUpperStr :: ABConfig -> String -> String
 toUpperStr cfg str =
   let ch = (Char.toUpper <$> str) in filter passesFilter ch
-  where
-    filters =
-      [ if noUseLetterE cfg then (/= 'E') else const True,
-        if noUseLetterL cfg then (/= 'L') else const False
-      ]
-    passesFilter :: Char -> Bool
-    passesFilter c = all (\f -> f c) filters
+ where
+  filters =
+    [ if noUseLetterE cfg then (/= 'E') else const True
+    , if noUseLetterL cfg then (/= 'L') else const False
+    ]
+  passesFilter :: Char -> Bool
+  passesFilter c = all (\f -> f c) filters
 
 welcomeMessage :: ABConfig -> String -> String -> String
 welcomeMessage cfg motd username =

@@ -1,5 +1,6 @@
+module Play where
+
 import Data.List
-import Distribution.Utils.IOData (hPutContents)
 import System.IO
 
 isInteger n = n == fromInteger (round n)
@@ -41,19 +42,19 @@ getSchoolGrade age = case age of
   _ -> College
 
 data Person = MkPerson
-  { name :: String,
-    age :: Integer,
-    isStudent :: Bool
+  { name :: String
+  , age :: Integer
+  , isStudent :: Bool
   }
   deriving (Show)
 
-aPerson = MkPerson {name = "Ola", age = 20, isStudent = True}
+aPerson = MkPerson{name = "Ola", age = 20, isStudent = True}
 
 personName :: Person -> String
 personName = name
 
 olaTenYearsInTheFuture :: Person
-olaTenYearsInTheFuture = aPerson {age = age aPerson + 10, isStudent = False}
+olaTenYearsInTheFuture = aPerson{age = age aPerson + 10, isStudent = False}
 
 data Bar = MkBar {bar :: String, isBar :: Bool}
 
@@ -61,14 +62,12 @@ data Baz = MkBaz {baz :: String, isBaz :: Bool}
 
 data Foo = MkFoo Baz | MkFoo' Bar
 
-f = MkFoo' $ MkBar {bar = "ola", isBar = True}
+f = MkFoo' $ MkBar{bar = "ola", isBar = True}
 
 main = do
   putStrLn "What's you're name"
   name <- getLine
   putStrLn $ "Hello " ++ name ++ "!"
-
-
 
 writeToFile = do
   fileToWrite <- openFile "sample.txt" WriteMode
@@ -80,4 +79,3 @@ readFileContents = do
   fileContents <- hGetContents fileToRead
   putStrLn fileContents
   hClose fileToRead
-

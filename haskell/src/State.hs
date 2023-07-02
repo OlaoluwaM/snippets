@@ -144,3 +144,12 @@ f = do
   push 5
 
 h = runWithState f
+
+chainCPS :: ((a -> r) -> r) -> (a -> (b -> r) -> r) -> ((b -> r) -> r)
+chainCPS f g b = f $ \a -> g a b
+
+callCC ::
+  ((a -> (b -> r) -> r) -> (a -> r) -> r) ->
+  (a -> r) ->
+  r
+callCC f h = f (\a _ -> h a) h
