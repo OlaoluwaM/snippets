@@ -61,5 +61,5 @@ type SomeFilter<List> =
 // Reduce
 type SomeReduce<Tuple, Acc = /* ... 📦 initial value */> =
   Tuple extends [infer First, ...infer Rest]
-  ? SomeReduce<Rest, /* ... 🤖 logic */> // Tail recursive because the rcursive result is returned without modification
+  ? SomeReduce<Rest, /* ... 🤖 logic */> // Tail recursive because the recursive result is returned without modification
   : Acc;

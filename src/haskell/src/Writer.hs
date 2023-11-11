@@ -61,3 +61,16 @@ censor f (Writer (log, v)) = Writer (f log, v)
 -}
 listen :: Writer log a -> Writer log (a, log)
 listen (Writer (log, x)) = Writer (log, (x, log))
+
+-- Before the Writer Monad
+
+addTwo :: Int -> ([String], Int)
+addTwo x = (["adding 2..."], x + 2)
+
+augmentAndStringify :: Int -> Int -> ([String], String)
+augmentAndStringify x y =
+  let (xLog, x') = addTwo x
+      (yLog, y') = addTwo y
+   in (["augmenting..."] ++ xLog ++ yLog ++ ["stringifying..."], show (x' + y'))
+
+

@@ -23,4 +23,4 @@ type GetColumn<TableT extends Table, ColumnN extends string> = TableT extends [
     : GetColumn<OtherColumns, ColumnN>
   : never;
 
-type Foo = GetColumn<UserTable, "age">;
+type Boo = GetColumn<UserTable, "age">;

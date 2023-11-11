@@ -26,6 +26,8 @@ dependencies:
   - aeson
   - bytestring
   - PyF
+  - mtl
+  - transformers
   - unordered-containers
 
 default-extensions:
