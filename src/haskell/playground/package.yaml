@@ -28,6 +28,7 @@ dependencies:
   - PyF
   - mtl
   - transformers
+  - megaparsec
   - unordered-containers
 
 default-extensions:

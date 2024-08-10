@@ -4,6 +4,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
+-- https://williamyaoh.com/posts/2019-10-19-a-cheatsheet-to-json-handling.html
 module AesonTut where
 
 import Data.Aeson
@@ -18,20 +19,20 @@ import Data.ByteString.Lazy qualified as LB
 import GHC.Base (Any)
 
 data Person = Person
-  {name :: Text, age :: Maybe Integer}
-  deriving (Generic, Show)
+    {name :: Text, age :: Maybe Integer}
+    deriving (Generic, Show)
 
 -- -- Allows decoding from JSON
 instance FromJSON Person where
-  parseJSON = withObject "Person" $ \obj -> do
-    personName <- obj .: "name"
-    personAge <- obj .:? "age"
-    return $ Person personName personAge
+    parseJSON = withObject "Person" $ \obj -> do
+        personName <- obj .: "name"
+        personAge <- obj .:? "age"
+        return $ Person personName personAge
 
 -- -- Allows encoding to JSON
 instance ToJSON Person where
-  -- toJSON :: Person -> Value
-  toJSON (Person name age) = object ["name" .= name, "age" .= age]
+    -- toJSON :: Person -> Value
+    toJSON (Person name age) = object ["name" .= name, "age" .= age]
 
 jsonString :: LB.ByteString
 jsonString = "{ \"age\": 20, \"name\": \"Ola\" }"
@@ -44,36 +45,36 @@ newPerson = Person{name = "Ola", age = Just 20}
 
 customValue :: Value
 customValue =
-  object
-    [ "list_price" .= (150000 :: Int)
-    , "sale_price" .= (143000 :: Int)
-    , "description" .= ("2-bedroom townhouse" :: String)
-    ]
+    object
+        [ "list_price" .= (150000 :: Int)
+        , "sale_price" .= (143000 :: Int)
+        , "description" .= ("2-bedroom townhouse" :: String)
+        ]
 
 data UserType = User | Admin | CustomerSupport deriving (Show, Generic)
 
 instance ToJSON UserType where
-  toJSON :: UserType -> Value
-  toJSON = \case
-    User -> "user"
-    Admin -> "admin"
-    CustomerSupport -> "customer_support"
+    toJSON :: UserType -> Value
+    toJSON = \case
+        User -> "user"
+        Admin -> "admin"
+        CustomerSupport -> "customer_support"
 
 instance FromJSON UserType where
-  parseJSON = withText "UserType" $ \case
-    "user" -> return User
-    "admin" -> return Admin
-    "customer_support" -> return CustomerSupport
-    _ -> fail "Error"
+    parseJSON = withText "UserType" $ \case
+        "user" -> return User
+        "admin" -> return Admin
+        "customer_support" -> return CustomerSupport
+        _ -> fail "Error"
 
 data APIResult = JSONData Value | Error' Text deriving (Show)
 
 instance FromJSON APIResult where
-  parseJSON = withObject "APIResult" $ \obj -> do
-    ok <- obj .: "ok"
-    if ok
-      then JSONData <$> (obj .: "data")
-      else Error' <$> (obj .: "error_msg")
+    parseJSON = withObject "APIResult" $ \obj -> do
+        ok <- obj .: "ok"
+        if ok
+            then JSONData <$> (obj .: "data")
+            else Error' <$> (obj .: "error_msg")
 
 goodData :: LB.ByteString
 goodData = "{\"ok\":true,\"data\":{\"foo\":2}}"
